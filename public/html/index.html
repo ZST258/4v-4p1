@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="preload" as="image" href="/image/loading.gif">
+  <link href="/css/loading.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+  <link href="/css/index.css" rel="stylesheet">
+  <link href="/css/tool.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="https://fonts.loli.net/css?family=Source+Code+Pro">
+  <link rel="stylesheet" type="text/css" href="https://fonts.loli.net/css?family=Noto+Serif+SC">
+  <script src="/js/lazysizes.min.js"></script>
+  
+  <link rel="shortcut icon" type="image/png" href="/icon.png">
+  <title>云霄国 - 搜你所想</title>
+</head>
+<body>
+  <div class="loading">
+    <div class="loading-wrapper">
+      <div class="loader">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+      <h3 class="loading-text">正在加载中，请稍后</h3>
+    </div>
+  </div>
+  <div id="app">
+    <div class="result-header">
+      <h2 id="title">云霄国 - 搜你所想</h2>
+      <div id="search-box">
+        <!-- 在这里建立一个搜索框 -->
+        <input type="text" id="search-input" placeholder="输入搜索内容">
+        <button id="search-button">搜索</button>
+      </div>
+    </div>
+    <div id="container">
+      <h1>今日推荐</h1>
+      <!-- 图片容器 -->
+      <div class="carousel-container">
+        <hr class="divider" />
+        <div class="carousel">
+        </div>
+        <hr class="divider" />
+        <div class="carousel-buttons">
+          <button class="prev-button"><i class="fa fa-angle-left"></i></button> <!-- 左箭头图标 -->
+          <button class="next-button"><i class="fa fa-angle-right"></i></button> <!-- 右箭头图标 -->
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="/js/search.js"></script>
+  <script>
+    var reqUrl = "/rank/censored/day";
+
+    function setWithExpiry(key, value, minutes) {
+      const now = new Date();
+      const item = {
+        value: value,
+        expiry: now.getTime() + minutes * 60 * 1000
+      };
+      localStorage.setItem(key, JSON.stringify(item))
+    }
+
+    function getWithExpiry(key) {
+      const itemStr = localStorage.getItem(key);
+      if (!itemStr) {
+        return null
+      }
+      const item = JSON.parse(itemStr);
+      const now = new Date();
+      if (now.getTime() > item.expiry) {
+        localStorage.removeItem(key);
+        return null
+      }
+      return item.value
+    }
+
+    // 定义一个函数，用于显示数据
+    function displayResults(data) {
+      var carousel = document.querySelector('.carousel');
+      var loading = document.querySelector('.loading');
+      if (data && data.message && data.message.length > 0) {
+        loading.style.display = 'none';
+        var results = data.message;
+        var html = '';
+
+        // 遍历结果并构建HTML
+        results.forEach(function (result) {
+          html += `
+                <img src="/image/loading.gif" data-src="${result.imgurl}" alt="${result.title}" class="lazyload" onerror='this.onerror=null; this.style.display="none"' onclick='window.location.href="/detail/${result.code}"'/>
+          `;
+        });
+
+        // 将HTML插入到容器中
+        carousel.innerHTML = html;
+      } else {
+        loading.style.display = 'none';
+        carousel.innerHTML = '<p>没有找到数据</p>';
+      }
+    }
+
+    async function fetchAndDisplayData(reqUrl) {
+      var cachedData = await getWithExpiry(reqUrl);
+
+      if (cachedData) {
+        displayResults(cachedData);
+      } else {
+        try {
+          const response = await fetch(reqUrl);
+          if (!response.ok) {
+            throw new Error("请求失败: " + response.status + " " + response.statusText);
+            window.location.href="/error/404"
+          }
+          const data = await response.json();
+          await setWithExpiry(reqUrl, data, 20); // 将数据保存到本地缓存
+          displayResults(data);
+        } catch (error) {
+          console.error('请求数据时出错：', error);
+          window.location.href="/error/500"
+        }
+      }
+    }
+
+  </script>
+  <script>
+  var autoPlayInterval; // 声明全局变量以便后续控制自动播放
+
+  function setupCarousel() {
+    // 获取轮播图元素和按钮
+    var carousel = document.querySelector('.carousel');
+    var prevButton = document.querySelector('.prev-button');
+    var nextButton = document.querySelector('.next-button');
+    var currentIndex = 0;
+    var picLength = carousel.children.length;
+
+    // 上一张图片按钮点击事件
+    prevButton.addEventListener('click', function () {
+      currentIndex = (currentIndex - 1 + picLength) % picLength;
+      updateCarousel();
+    });
+
+    // 下一张图片按钮点击事件
+    nextButton.addEventListener('click', function () {
+      currentIndex = (currentIndex + 1) % picLength;
+      updateCarousel();
+    });
+
+    // 自动播放轮播图
+    autoPlayInterval = setInterval(function () {
+      currentIndex = (currentIndex + 1) % picLength;
+      updateCarousel();
+    }, 5000); // 5秒切换一张图片
+
+    // 更新轮播图的显示
+    function updateCarousel() {
+      if (getComputedStyle(carousel.children[currentIndex]).display == "none") {
+        picLength--;
+      }
+      var translateX = -currentIndex * (20 + carousel.clientWidth); // 使用像素计算偏移量
+      carousel.style.transition = 'transform 0.3s';
+      carousel.style.transform = 'translateX(' + translateX + 'px)'; // 使用像素单位
+    }
+
+    // 监听窗口大小变化事件
+    window.addEventListener('resize', function () {
+      // 重置轮播图
+          currentIndex = 0;
+      // 在窗口大小变化时重新计算轮播图的位置
+      updateCarousel();
+    });
+
+    // 监听鼠标进入轮播图容器事件
+    carousel.addEventListener('mouseenter', function () {
+      clearInterval(autoPlayInterval); // 清除自动播放的间歇
+    });
+
+    // 监听鼠标离开轮播图容器事件
+    carousel.addEventListener('mouseleave', function () {
+      // 重新启动自动播放
+      autoPlayInterval = setInterval(function () {
+        currentIndex = (currentIndex + 1) % picLength;
+        updateCarousel();
+      }, 5000); // 5秒切换一张图片
+    });
+  }
+// 调用该函数并传递请求的URL
+fetchAndDisplayData(reqUrl)
+  .then(function () {
+    // 异步操作完成后执行
+    setupCarousel();
+    var loading = document.querySelector('.loading');
+    loading.style.display = 'none';
+  })
+  .catch(function (error) {
+    console.error('发生错误：', error);
+  });
+  </script>
+</body>
+</html>

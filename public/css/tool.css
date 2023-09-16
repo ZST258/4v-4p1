@@ -1,0 +1,111 @@
+.result-header {
+	width:65%;
+	margin-top:40px;
+	margin-left:auto;
+	margin-right:auto;
+	border-radius:10px;
+	box-shadow:0 0 10px rgba(0,0,0,0.2);
+	padding:20px;
+        flex-wrap: wrap;
+        text-decoration:none;
+	display: flex;
+        justify-content: center; /* 居中对齐子元素 */
+        text-align: center; /* 文本居中对齐 */
+        backdrop-filter: blur(30px);
+}
+
+@media(max-width:768px) {
+        .result-header {
+          width:85%;
+        }
+}
+
+#search-box {
+    width: 100%;
+    display: flex;
+    justify-content: center; /* 两个子元素之间的空间均分 */
+    margin: 20px auto; /* 调整搜索框与h2之间的间距 */
+}
+
+#search-input {
+    width: 80%;
+    padding: 10px;
+    border: 1.5px solid #ccc;
+    border-radius: 5px;
+    margin-right: 5px;
+}
+
+#search-button {
+    width: 80px;
+    margin-left: 5px;
+    background-color: #66ccff; /* 浅蓝色背景 */
+    color: #fff; /* 文字颜色为白色 */
+    font-weight:bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#prebutton {
+    width: 80px;
+    margin: 20px 30px;
+    background-color: #66ccff; /* 浅蓝色背景 */
+    color: #fff; /* 文字颜色为白色 */
+    font-weight:bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#mainbutton {
+    width: 80px;
+    height: 35px;
+    margin: 20px 30px;
+    background-color: #66ccff; /* 浅蓝色背景 */
+    color: #fff; /* 文字颜色为白色 */
+    font-weight:bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#search-button:hover {
+    background-color: #3385ff; /* 鼠标悬停时颜色变化 */
+}
+
+.page-bottom {
+	width:65%;
+	margin-top:40px;
+	margin-left:auto;
+	margin-right:auto;
+        margin-bottom:40px;
+	border-radius:10px;
+	box-shadow:0 0 10px rgba(0,0,0,0.2);
+	padding:20px;
+        flex-wrap: wrap;
+        text-decoration:none;
+	display: flex;
+        justify-content: center; /* 居中对齐子元素 */
+        text-align: center; /* 文本居中对齐 */
+        backdrop-filter: blur(30px);
+}
+
+@media(max-width:768px) {
+        .page-bottom {
+          width:85%;
+        }
+}
+
+#prev-page, #next-page {
+    width: 80px;
+    height: 40px;
+    margin: 10px 20px;
+    padding: 5px;
+    background-color: #66ccff; /* 浅蓝色背景 */
+    color: #fff; /* 文字颜色为白色 */
+    font-weight:bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+

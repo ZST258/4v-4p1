@@ -1,0 +1,88 @@
+body {
+	text-align:center;
+        font-family: 'Source Code Pro','Noto Serif SC';
+        background: linear-gradient(to top left, #91defe, #99c0f9, #bdb6ec, #d7b3e3, #efb3d5, #f9bccc);
+        margin: 0;
+        padding: 0;
+        background-size: 100% 100%; /* 让渐变背景填充整个页面 */
+        background-repeat: no-repeat; /* 防止渐变背景重复 */
+        min-height: 100vh; /* 设置最小高度为视口高度，以确保渐变背景充满整个页面 */             
+}
+#container {
+	width:65%;
+	margin:40px auto;
+	border-radius:10px;
+	box-shadow:0 0 10px rgba(0,0,0,0.2);
+	padding:20px;
+        flex-wrap: wrap;
+        flex-direction: column;
+        text-decoration:none;
+	display: flex;
+        backdrop-filter: blur(30px);
+        justify-content: center; /* 居中对齐子元素 */
+        align-items: center;
+}
+
+@media(max-width:768px) {
+        #container {
+          width:85%;
+        }
+}
+
+/* 样式化轮播图容器 */
+.carousel-container {
+  width: 100%;
+  overflow: hidden;
+  max-width: 800px;
+  position: relative;
+  border-radius:10px;
+}
+
+/* 图片容器样式 */
+.carousel {
+  display: flex;
+  transition: transform 0.3s;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius:10px;
+}
+
+.divider {
+	border:0;
+	border-top:2px solid #ccc;
+	margin:20px auto;
+	max-width:900px
+}
+
+.carousel img {
+  width: 100%;
+  height: 100%;
+  flex-shrink: 0;
+  object-fit: cover;
+  margin-right: 20px;
+  border-radius:10px;
+}
+
+/* 切换按钮样式 */
+.carousel-buttons {
+  text-align: center;
+  margin-top: 10px;
+  justify-content: space-between;
+  display: flex;
+  width: 100%;
+}
+
+.prev-button,
+.next-button {
+  padding: 20px 30px;
+  background-color: #9B41F5;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  border-radius:10px;
+}
+
+.prev-button i,.next-button i {
+  transform: scale(2); /* 根据需要调整放大倍数 */
+}

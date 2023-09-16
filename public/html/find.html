@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="preload" as="image" href="/image/loading.gif">
+    <link rel="shortcut icon" type="image/png" href="/icon.png">
+    <link rel="stylesheet" type="text/css" href="https://fonts.loli.net/css?family=Source+Code+Pro">
+    <link rel="stylesheet" type="text/css" href="https://fonts.loli.net/css?family=Noto+Serif+SC">
+    <link href="/css/loading.css" rel="stylesheet">
+    <link href="/css/search.css" rel="stylesheet">
+    <link href="/css/tool.css" rel="stylesheet">
+    <script src="/js/lazysizes.min.js"></script>
+    <title>搜索结果</title>
+</head>
+<body>
+<div class="loading">
+    <div class="loading-wrapper">
+        <div class="loader">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+        <h3 class="loading-text">正在检索中，请稍后</h3>
+    </div>
+</div>
+<div id="app">
+    <div class="result-header">
+        <h2 id="title"></h2>
+        <div id="search-box">
+            <!-- 在这里建立一个搜索框 -->
+            <input type="text" id="search-input" placeholder="输入搜索内容">
+            <button id="search-button">搜索</button>
+        </div>
+    </div>
+    <div id="container">
+        <!-- 查询结果将在此显示 -->
+    </div>
+    <div class="page-bottom">
+        <div id="page-box">
+            <button id="prev-page">上一页</button>
+            <button id="next-page">下一页</button>
+        </div>
+    </div>
+</div>
+<script>
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const wdValue = urlParams.get('wd');
+    const pagenum = urlParams.get('page');
+    const pageValue = pagenum ? pagenum : 1;
+    const reqUrl = "/search?wd=" + wdValue + "&page=" + pageValue;
+
+    function setWithExpiry(key, value, minutes) {
+        const now = new Date();
+        const item = {
+            value: value,
+            expiry: now.getTime() + minutes * 60 * 1000
+        };
+        localStorage.setItem(key, JSON.stringify(item))
+    }
+
+    function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key);
+        if (!itemStr) {
+            return null
+        }
+        const item = JSON.parse(itemStr);
+        const now = new Date();
+        if (now.getTime() > item.expiry) {
+            localStorage.removeItem(key);
+            return null
+        }
+        return item.value
+    }
+
+    // 定义一个函数，用于显示数据
+    function displayResults(data) {
+        var titleElement = document.getElementById("title");
+        var container = document.getElementById('container');
+        titleElement.textContent = data.message.title;
+        if (data && data.message && data.message.results && data.message.results.length > 0) {          
+            var results = data.message.results;
+            var html = '';
+
+            // 遍历结果并构建HTML
+            results.forEach(function (result, index) {
+                const isExact = result.exact && index === 0;
+                html += `
+                <div class="result ${isExact ? 'exact' : ''}">
+                    <a href="${result.href}" class="movie-box">
+                        <h4>${result.title}</h4>
+                        <p>日期: ${result.date}</p>
+                        <p>番号: ${result.code}</p>
+                        <img src="/image/loading.gif" data-src="${result.imgurl}" class="lazyload" alt="${result.title}" onerror='this.onerror=null; this.src="/image/no_preview_lg.jpg"' />
+                    </a>
+                </div>
+                `;
+            });
+
+            // 将HTML插入到容器中
+            container.innerHTML = html;
+        } else {
+            loading.style.display = 'none';
+            container.innerHTML = '<p>没有找到数据</p>';
+        }
+    }
+
+    async function fetchAndDisplayData(reqUrl) {
+        var cachedData = getWithExpiry(reqUrl);
+
+        if (cachedData) {
+            displayResults(cachedData);
+        } else {
+            try {
+                const response = await fetch(reqUrl);
+
+                if (!response.ok) {
+                    throw new Error("请求失败: " + response.status + " " + response.statusText);
+                }
+
+                const data = await response.json();
+                setWithExpiry(reqUrl, data, 20); // 将数据保存到本地缓存
+                displayResults(data);
+            } catch (error) {
+                window.location.href="/error/500"
+            }
+        }
+    }
+
+// 调用该函数并传递请求的URL
+fetchAndDisplayData(reqUrl)
+  .then(() => {
+        var loading = document.querySelector('.loading');
+        loading.style.display = 'none';
+  })
+  .catch((error) => {
+        window.location.href="/error/500"
+  });
+
+</script>
+<script src="/js/search.js"></script>
+<script src="/js/page.js"></script>
+
+<script>
+    // 用法示例
+    document.addEventListener('DOMContentLoaded', function () {
+        const currentPagePath = window.location.pathname;
+        const pageIndex = pageValue;
+        const pageTemplate = "/find?wd=" + wdValue + "&page=";
+        setupPaginationButtons1('prev-page', 'next-page', pageTemplate, pageIndex);
+    });
+</script>
+</body>
+</html>

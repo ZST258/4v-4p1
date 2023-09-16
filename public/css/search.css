@@ -1,0 +1,72 @@
+body {
+	text-align:center;
+        font-family: 'Source Code Pro','Noto Serif SC';
+        background: linear-gradient(to top left, #91defe, #99c0f9, #bdb6ec, #d7b3e3, #efb3d5, #f9bccc);
+        margin: 0;
+        padding: 0;
+        background-size: 100% 100%; /* 让渐变背景填充整个页面 */
+        background-repeat: no-repeat; /* 防止渐变背景重复 */
+        min-height: 100vh; /* 设置最小高度为视口高度，以确保渐变背景充满整个页面 */             
+}
+#container {
+	width:65%;
+	margin-top:40px;
+	margin-left:auto;
+	margin-right:auto;
+	border-radius:10px;
+	box-shadow:0 0 10px rgba(0,0,0,0.2);
+	padding:20px;
+        flex-wrap: wrap;
+        text-decoration:none;
+	display: inline-flex;
+        justify-content: center; /* 居中对齐子元素 */
+        backdrop-filter: blur(30px);
+}
+
+@media(max-width:768px) {
+	#container {
+ 	  width:85%;
+        }
+}
+
+.result {
+  flex: 0 0 calc(33% - 30px); /* 控制每个子元素的宽度，这里假设容器最多容纳3列，并设置了列之间的间距为10px */
+  min-width: 320px;
+  max-width: 320px;
+  border-radius:5px;
+  margin: 5px 10px; /* 添加一些间距，以增加可读性 */
+  display: flex;
+  border-radius:5px;
+}
+
+.exact {
+  border: 2px solid #5C41F5;
+}
+
+
+.movie-box {
+  text-decoration:none;
+  background-color: #F7F1FF;
+  padding: 5px;
+  border-radius:5px;
+  flex-direction: column; /* 设置内容为垂直排列 */
+  justify-content: flex-end; /* 垂直方向上等间距分布内容 */
+  display: flex;
+  box-shadow:0 0 5px rgba(0,0,0,0.5);
+  width: 100%;
+}
+
+.movie-box h4 {
+  color: black;
+  align-self: center; /* 标题垂直居中对齐 */
+  margin: auto 0;
+}
+
+.movie-box p {
+  text-decoration:none;
+  color: #FF5A4C;
+}
+
+.movie-box img {
+  max-width: 100%;
+}

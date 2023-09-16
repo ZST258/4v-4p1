@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>请求失败</title>
+</head>
+<style>
+body {
+	text-align:center;
+        font-family: 'Source Code Pro','Noto Serif SC';
+        background: linear-gradient(to top left, #91defe, #99c0f9, #bdb6ec, #d7b3e3, #efb3d5, #f9bccc);
+        margin: 0;
+        padding: 0;
+        background-size: 100% 100%; /* 让渐变背景填充整个页面 */
+        background-repeat: no-repeat; /* 防止渐变背景重复 */
+        min-height: 100vh; /* 设置最小高度为视口高度，以确保渐变背景充满整个页面 */             
+}
+#container {
+	width:65%;
+	margin-top:40px;
+	margin-left:auto;
+	margin-right:auto;
+	border-radius:10px;
+	box-shadow:0 0 10px rgba(0,0,0,0.2);
+	padding:20px;
+        flex-wrap: wrap;
+        flex-direction: column;
+        text-decoration:none;
+	display: flex;
+        backdrop-filter: blur(30px);
+        height: 100vh;
+        justify-content: center; /* 居中对齐子元素 */
+        align-items: center;
+}
+#errorcode {
+       color:red;
+       font-weight: bold;
+}
+#errorbox {
+      background-color: white !important;
+      width: 90%
+}
+</style>
+<body>
+    <div id="container">
+       <div id="error-box">
+        <h1>请求失败</h1>
+        <h2 id="errorcode"></h2>
+        <h2>很抱歉，请求遇到了问题。</h2>
+       </div>
+    </div>
+</body>
+<script>
+//获取错误码
+const errorcode = window.location.pathname.split('/')[2];
+const errorH2 = document.getElementById('errorcode');
+errorH2.textContent = '错误码:' + errorcode;
+</script>
+</html>
