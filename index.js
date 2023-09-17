@@ -7,14 +7,17 @@ const Redis = require('ioredis');
 
 const path = require('path');
 
-// 创建Redis连接池
-const redisPool = new Redis({
-  host: '127.0.0.1',
-  port: '6379'
-});
-
 // 引入连接池模块
-const { redisMiddleware, getCache } = require('./middlewares/redisClient');
+const { createRedisPool, redisMiddleware, getCache } = require('./middlewares/redisClient');
+
+let redisPool = null; // 声明一个全局的redisPool变量
+
+(async () => { //必须等待promise返回
+  redisPool = await createRedisPool();
+  if (!redisPool) {
+    console.error('Redis连接失败');
+  }
+})();
 
 const webRouter = require('./middlewares/webRouter'); // 导入 webRouter.js
 const imgProxyRouter = require('./middlewares/imgProxy');
