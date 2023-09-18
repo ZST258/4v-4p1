@@ -15,7 +15,7 @@ git commit -m "Daily update $(date +\%Y-\%m-\%d)"
 git push "https://${github_username}:${github_token}@github.com/ZST258/4v-4p1" "${branch_name}" --force
 
 # 拉取最新版本
-git pull origin "$branch_name"
+git pull "https://${github_username}:${github_token}@github.com/ZST258/4v-4p1" "${branch_name}"
 
 echo "项目已更新并上传到GitHub仓库，最新版本已拉取"
 
