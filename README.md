@@ -1,1 +1,5 @@
-# API项目说明\n\n这是一个API项目的说明文件。
+# 云霄资料库2.0
+```
+ npm install
+ node index.js
+```
