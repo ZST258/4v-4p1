@@ -12,7 +12,7 @@ cd /api-project
 # 强制上传项目到GitHub仓库
 git add .
 git commit -m "Daily update $(date +\%Y-\%m-\%d)"
-git push origin "${branch_name}"
+git push origin "${branch_name}" --username "${github_username}" --token "${github_token}"
 
 # 拉取最新版本
 git pull origin "$branch_name"
