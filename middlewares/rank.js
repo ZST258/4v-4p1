@@ -21,7 +21,7 @@ async function ProxyHtml(url, res) {
                         code: item.find('h5.card-title').text().trim(),
 			title: item.find('p.card-text').text().trim(),
 			date: item.find('span.text-muted').text().trim(),
-			href: "/detail/" + code;
+			href: "/detail/" + code
     		};
 	}).get();
 
