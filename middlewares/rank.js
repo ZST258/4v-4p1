@@ -14,10 +14,14 @@ async function ProxyHtml(url, res) {
         const response = await axios.get(url, { headers });
         const $ = cheerio.load(response.data); //载入页面
         const results =  $('.category-page.video-list-item.col-xl-3.col-sm-6.col-12').map(function() {
-                imgSrc = $(this).find('img.card-img-top.embed-responsive-item').attr('data-src');          
+		const item = $(this);
+                imgSrc = item.find('img.card-img-top.embed-responsive-item').attr('data-src');          
     		return {
         		imgurl: "/pics/" + Buffer.from(imgSrc.replace('https://pics.vpdmm.cc','https://pics.dmm.co.jp')).toString('base64'),
-                        code: $(this).find('h5.card-title').text().trim()
+                        code: item.find('h5.card-title').text().trim(),
+			title: item.find('p.card-text').text().trim(),
+			date: item.find('span.text-muted').text().trim(),
+			href: "/detail/" + code;
     		};
 	}).get();
 
