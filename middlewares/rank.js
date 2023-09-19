@@ -15,10 +15,11 @@ async function ProxyHtml(url, res) {
         const $ = cheerio.load(response.data); //载入页面
         const results =  $('.category-page.video-list-item.col-xl-3.col-sm-6.col-12').map(function() {
 		const item = $(this);
-                imgSrc = item.find('img.card-img-top.embed-responsive-item').attr('data-src');          
+                imgSrc = item.find('img.card-img-top.embed-responsive-item').attr('data-src');  
+		const code = item.find('h5.card-title').text().trim();
     		return {
         		imgurl: "/pics/" + Buffer.from(imgSrc.replace('https://pics.vpdmm.cc','https://pics.dmm.co.jp')).toString('base64'),
-                        code: item.find('h5.card-title').text().trim(),
+                        code: code,
 			title: item.find('p.card-text').text().trim(),
 			date: item.find('span.text-muted').text().trim(),
 			href: "/detail/" + code
