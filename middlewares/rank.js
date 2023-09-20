@@ -22,7 +22,8 @@ async function ProxyHtml(url, res) {
                         code: code,
 			title: item.find('p.card-text').text().trim(),
 			date: item.find('span.text-muted').text().trim(),
-			href: "/detail/" + code
+			href: "/detail/" + code,
+			exact: 0
     		};
 	}).get();
 
