@@ -8,7 +8,7 @@ const headers = {
 async function fetchData(url) {
   try {
     const response = await axios.get(url, { headers });
-    return response.data;
+    return response;
   } catch (error) {
     return null;
   }
@@ -24,7 +24,8 @@ const websiteUrl = {
 // 验证番号的合法性
 async function validateCode(req) {
   // 判断 code 属性是否为字符串，只包含大小写字母、数字和'-'符号
-  if (typeof req.body.code !== 'string' || !/^[a-zA-Z0-9\-]+$/.test(req.body.code)) {
+  if (typeof req.body.code !== 'string' || !/^[a-zA-Z0-9\-_.]+$/.test(req.body.code)) {
+    console.log(req.body.code);
     req.body.type = 'error';
     return;
   }
@@ -49,11 +50,8 @@ async function validateType(req) {
 async function fetchInfoHtml(req, url) {
   req.body.site = 'javbus';
   const data = await fetchData(url);
-
-  if (data) {
-    req.body.html = data;
-    req.body.site = "javbus";
-    return data;
+  if (data && data.status >= 200 && data.status < 300 ) {
+    return data.data;
   }
 
   // 大写字母抓取失败，尝试小写字母抓取
@@ -61,10 +59,8 @@ async function fetchInfoHtml(req, url) {
   const lowerUrl = `${websiteUrl[req.body.site]}${req.body.code}`;
   const lowerData = await fetchData(lowerUrl);
 
-  if (lowerData) {
-    req.body.html = lowerData;
-    req.body.site = "javbus";
-    return lowerData;
+  if (lowerData && lowerData.status >= 200 && lowerData.status < 300) {
+    return lowerData.data;
   }
 
   // 小写字母抓取失败，尝试 javmenu
@@ -72,10 +68,8 @@ async function fetchInfoHtml(req, url) {
   req.body.site = "javmenu";
   const javmenuUrl = `${websiteUrl[req.body.site]}${req.body.code}`;
   const javmenuData = await fetchData(javmenuUrl);
-
   if (javmenuData && javmenuData.status >= 200 && javmenuData.status < 300) {
-    req.body.html = javmenuData;
-    return javmenuData;
+    return javmenuData.data;
   }
 
   // 所有尝试失败，设置 type 为 'error'
@@ -88,33 +82,33 @@ async function fetchInfoHtml(req, url) {
 async function fetchMagnetHtml(req, url) {
     // 使用 fetchData 函数抓取页面内容
     const response = await fetchData(url);
-    if (!response) {
+    if (!response || response.status < 200 || response.status >= 300) {
       return;
     }
 
-    const $ = cheerio.load(response);
+    const $ = cheerio.load(response.data);
 
     // 获取详情页链接
     const detailUrl = $('div.movie-list.h.cols-4.vcols-8 > div.item:first-child > a').attr('href').trim();
 
     // 请求详情页
     const response1 = await fetchData(`https://javdb.com${detailUrl}`);
-    if (!response1) {
+    if (!response1 || response1.status < 200 || response1.status >= 300) {
       return;
     }
 
     // 这里可以处理 response1，例如解析 HTML，提取所需信息
-    return response1;
+    return response1.data;
 }
 
 async function fetchRateHtml(req, url) {
     // 使用 fetchData 函数抓取页面内容
     const response = await fetchData(url);
-    if (!response) {
+    if (!response || response.status < 200 || response.status >= 300) {
       return;
     }
 
-    const $ = cheerio.load(response);
+    const $ = cheerio.load(response.data);
     // 抓取评分信息
     const firstItem = $('div.movie-list.h.cols-4.vcols-8 > div.item:first-child');
     req.body.rate = firstItem.find('a > div.score > span.value').text().trim();
@@ -123,12 +117,12 @@ async function fetchRateHtml(req, url) {
 
     // 请求详情页
     const response1 = await fetchData(`https://javdb.com${detailUrl}/reviews/lastest`);
-    if (!response1) {
+    if (!response1 || response1.status < 200 || response1.status >= 300) {
       return;
     }
 
     // 这里可以处理 response1，例如解析 HTML，提取所需信息
-    return response1;
+    return response1.data;
 }
 
 async function PreprocessRequest(req) {
@@ -144,7 +138,7 @@ async function PreprocessRequest(req) {
       req.body.site = 'javbus';
       req.body.code = req.body.code.toUpperCase();
       //执行对应的抓取函数
-      req.body.html = await fetchInfoHtml(req, `${websiteUrl[req.body.site]}${req.body.code}`)
+      req.body.html = await fetchInfoHtml(req, `${websiteUrl[req.body.site]}${req.body.code}`);
       break;
     case 'rate':
       req.body.site = 'javdb';

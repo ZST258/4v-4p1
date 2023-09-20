@@ -3,7 +3,7 @@ const axios = require('axios');
 const cheerio = require('cheerio');
 const router = express.Router();
 // 封装网页代理函数
-async function ProxyHtml(url, res) {
+async function ProxyHtml(url, res, title) {
 
     const headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36 Edg/115.0.1901.203'
@@ -14,7 +14,7 @@ async function ProxyHtml(url, res) {
         const response = await axios.get(url, { headers });
         const $ = cheerio.load(response.data); //载入页面
 	const result = {
-		title: "",
+		title: title,
                 results: []
 	}
         result.results =  $('.category-page.video-list-item.col-xl-3.col-sm-6.col-12').map(function() {
@@ -40,10 +40,28 @@ async function ProxyHtml(url, res) {
 
 // 网页代理路由，使用 /htmls/:url
 router.get(/^\/rank/, async (req, res) => {
-    const page = req.query.page; // 获取查询参数 "page" 的值    
+    const page = req.query.page; // 获取查询参数 "page" 的值
+       //
+    const sort = req.path.split('/')[2];
+    const period = req.path.split('/')[3];
+    let title=''
+    const sortMap = {
+        censored: '有码', 
+        uncensored: '无码',
+        western: '欧美',
+        actress: '女优'
+    }
+    const periodMap = {
+        day: '日',
+        week: '周',
+        month: '月'
+    }
+    if(sort && period ) {
+       title=`云霄${sortMap[sort]}${periodMap[period]}榜`;
+    }
     const htmlUrl = "https://javmenu.com/zh" + req.path +'?page=' + page; // 获取 URL 参数     
     // 调用网页代理函数
-    ProxyHtml(htmlUrl, res);
+    ProxyHtml(htmlUrl, res, title);
 });
 
 module.exports = router;

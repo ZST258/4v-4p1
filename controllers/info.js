@@ -7,7 +7,6 @@ const { extractInfoFromJavmenu } = require('../crawlerlib/javmenu.js');
 async function GetInfoMsg(code, html, site) {
     try {
         const $ = cheerio.load(html);
-
         // 创建一个 MovieInfo 对象，将所有属性初始化为空
         const MovieInfo = {
             title: "",
