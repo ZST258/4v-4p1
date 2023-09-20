@@ -83,9 +83,9 @@
     function displayResults(data) {
       var carousel = document.querySelector('.carousel');
       var loading = document.querySelector('.loading');
-      if (data && data.message && data.message.length > 0) {
+      if (data && data.message && data.message.results.length > 0) {
         loading.style.display = 'none';
-        var results = data.message;
+        var results = data.message.results;
         var html = '';
 
         // 遍历结果并构建HTML
