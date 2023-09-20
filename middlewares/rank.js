@@ -39,7 +39,7 @@ async function ProxyHtml(url, res) {
 }
 
 // 网页代理路由，使用 /htmls/:url
-router.get(/^\/rank(.*)/, async (req, res) => {    
+router.get(/^\/rank/, async (req, res) => {    
     const htmlUrl = "https://javmenu.com/zh" + req.path; // 获取 URL 参数
     // 调用网页代理函数
     ProxyHtml(htmlUrl, res);
