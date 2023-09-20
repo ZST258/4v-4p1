@@ -12,7 +12,7 @@ router.get(/^(\/(genre|series|director|studio|star|label|actress))(.*)/, (req, r
   res.sendFile(`${staticDir}/html/result.html`);
 });
 
-// 匹配 /censored/genre、/censored/series、/censored/director、/censored/studio 路由
+//排行榜
 router.get(/^\/ranks/, (req, res) => {
   // req.params[0] 匹配到的路径部分
   res.sendFile(`${staticDir}/html/result1.html`);
