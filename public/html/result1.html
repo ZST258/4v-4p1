@@ -46,7 +46,7 @@
     </div>
   </div>
   <script>
-    var reqUrl = window.location.pathname;
+    var reqUrl = window.location.pathname.replace('ranks','rank');
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     const pageValue = urlParams.get('page');
