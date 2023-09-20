@@ -7,7 +7,7 @@ const path = require('path');
 const staticDir = path.resolve(`${__dirname}/../public`);
 router.use(express.static(staticDir));
 // 匹配 genre、series、director、studio 路由
-router.get(/^(\/(genre|series|director|studio|star|label|actress))(.*)/, (req, res) => {
+router.get(/^(\/(genre|series|director|studio|star|label|actress|ranks))(.*)/, (req, res) => {
   // req.params[0] 匹配到的路径部分
   res.sendFile(`${staticDir}/html/result.html`);
 });
