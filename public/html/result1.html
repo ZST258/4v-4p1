@@ -46,10 +46,12 @@
     </div>
   </div>
   <script>
-    var reqUrl = window.location.pathname.replace('ranks','rank');
+    var reqUrl = window.location.pathname.includes("grade")?window.location.pathname.replace('grade','rank'):`/htmls${window.location.pathname}`;
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
-    const pageValue = urlParams.get('page');
+    const pagenum = urlParams.get('page');
+    const pageValue = pagenum ? pagenum : 1;
+    reqUrl = reqUrl + '?page=' + pageValue;
     function setWithExpiry(key, value, minutes) {
     const now = new Date();
     const item = {
@@ -112,7 +114,7 @@ function fetchAndDisplayData(reqUrl) {
   if (cachedData) {
     displayResults(cachedData);
   } else {
-    fetch(`/htmls${reqUrl}`)
+    fetch(reqUrl)
       .then(function (response) {
         if (!response.ok) {
           throw new Error("请求失败: " + response.status + " " + response.statusText);

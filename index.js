@@ -97,12 +97,12 @@ app.post('/api', redisMiddleware(redisPool), async (req, res) => {
 
 // 使用图片代理路由
 app.use(imgProxyRouter);
-
+app.use(webRouter);
 // 使用html网页代理路由
 app.use(htmlProxyRouter);
 app.use(searchRouter);
 app.use(rankRouter);
-app.use(webRouter);
+
 
 app.listen(port, () => {
     console.log(`服务器运行在 http://localhost:${port}`);

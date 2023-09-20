@@ -13,8 +13,7 @@ router.get(/^(\/(genre|series|director|studio|star|label|actress))(.*)/, (req, r
 });
 
 //排行榜
-router.get(/^\/ranks/, (req, res) => {
-  // req.params[0] 匹配到的路径部分
+router.get(/^\/grade/, (req, res) => {
   res.sendFile(`${staticDir}/html/result1.html`);
 });
 
