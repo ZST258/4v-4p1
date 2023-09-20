@@ -13,7 +13,11 @@ async function ProxyHtml(url, res) {
         // 使用 axios 获取图片并将其作为流传输到客户端
         const response = await axios.get(url, { headers });
         const $ = cheerio.load(response.data); //载入页面
-        const results =  $('.category-page.video-list-item.col-xl-3.col-sm-6.col-12').map(function() {
+	const result = {
+		title: "",
+                results: []
+	}
+        result.results =  $('.category-page.video-list-item.col-xl-3.col-sm-6.col-12').map(function() {
 		const item = $(this);
                 imgSrc = item.find('img.card-img-top.embed-responsive-item').attr('data-src');  
 		const code = item.find('h5.card-title').text().trim();
@@ -27,7 +31,7 @@ async function ProxyHtml(url, res) {
     		};
 	}).get();
 
-        res.json({ message: results });
+        res.json({ message: result });
     } catch (error) {
         console.error(`下载网页 ${url} 失败:`, error);
         res.status(500).send('下载网页失败');
