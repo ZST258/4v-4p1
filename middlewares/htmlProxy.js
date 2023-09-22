@@ -1,7 +1,9 @@
 const express = require('express');
 const axios = require('axios');
 const cheerio = require('cheerio');
+const instance = require('../controllers/instance');
 const router = express.Router();
+
 // 提取网站javbus信息的函数
 function extractJavbusInfo(data) {
     const $ = cheerio.load(data);
@@ -74,20 +76,16 @@ function extractJavmenuInfo(data) {
 
 // 封装网页代理函数
 async function ProxyHtml(url, res) {
-    const axios = require('axios');
-
-    const headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36 Edg/115.0.1901.203'
-    };
+    const instance = require('instance');
 
     try {
-        const response = await axios.get(url, { headers });
+        const response = await instance.get(url);
         const result = extractJavbusInfo(response.data);
         res.json({ message: result });
     } catch (error) {
       try {
         url = url.replace('https://www.javbus.com/','https://javmenu.com/zh/')
-        const response = await axios.get(url, { headers });
+        const response = await instance.get(url);
         const result = extractJavmenuInfo(response.data);
         res.json({ message: result });
       } catch (serror) {

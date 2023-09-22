@@ -2,15 +2,11 @@ const express = require('express');
 const axios = require('axios');
 const cheerio = require('cheerio');
 const router = express.Router();
-
-const headers = {
-  'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36 Edg/115.0.1901.203'
-};
-
+const instance = require('../controllers/instance');
 async function getSearchResult(url, res) {
 
   try {
-    const response = await axios.get(url, { headers });
+    const response = await instance.get(url);
     const $ = cheerio.load(response.data);
 
     const result = {

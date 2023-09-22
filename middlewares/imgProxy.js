@@ -2,13 +2,7 @@ const express = require('express');
 const axios = require('axios');
 const https = require('https');
 const router = express.Router();
-
-// 创建一个自定义的 Axios 实例，配置忽略证书错误
-const instance = axios.create({
-  httpsAgent: new https.Agent({
-    rejectUnauthorized: false // 忽略证书错误
-  })
-});
+const instance = require('../controllers/instance');
 
 // 封装图片代理函数
 async function ProxyImgStream(url, res) {

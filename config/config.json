@@ -1,0 +1,16 @@
+{
+  "port": 3333,
+  "redis": {
+       "isUse": true,
+       "host": "127.0.0.1",
+       "port": 6379,
+       "db": 0
+   },
+  "proxy": {
+      "isUse": false,
+      "host": "127.0.0.1",
+      "port": 10809
+  },
+  "tlsverify": false,
+  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36 Edg/115.0.1901.203"
+}

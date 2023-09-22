@@ -4,8 +4,9 @@ const axios = require('axios'); // 引入 axios
 const cheerio = require('cheerio'); // 引入 cheerio
 const https = require('https');
 const Redis = require('ioredis');
-
 const path = require('path');
+const config = require('./config/config');
+const instance = require('./controllers/instance');
 
 // 引入连接池模块
 const { createRedisPool, redisMiddleware, getCache } = require('./middlewares/redisClient');
@@ -15,7 +16,7 @@ let redisPool = null; // 声明一个全局的redisPool变量
 (async () => { //必须等待promise返回
   redisPool = await createRedisPool();
   if (!redisPool) {
-    console.error('Redis连接失败');
+    console.error('Redis未连接');
   }
 })();
 
@@ -26,7 +27,7 @@ const searchRouter = require('./middlewares/search');
 const rankRouter = require('./middlewares/rank');
 
 const app = express();
-const port = 3333;
+const port = config.port || 3333;
 
 app.use((req, res, next) => {
   res.setHeader('X-Content-Type-Options', 'nosniff');

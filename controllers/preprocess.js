@@ -1,13 +1,10 @@
 const axios = require('axios');
 const cheerio = require('cheerio');
-
-const headers = {
-  'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36 Edg/115.0.1901.203'
-};
-
+const instance = require('./instance');
+const config = require('../config/config')
 async function fetchData(url) {
   try {
-    const response = await axios.get(url, { headers });
+    const response = await instance.get(url);
     return response;
   } catch (error) {
     return null;
@@ -15,11 +12,7 @@ async function fetchData(url) {
 }
 
 //一个网页链接对象
-const websiteUrl = {
-   javbus: "https://www.javbus.com/",
-   javmenu: "https://javmenu.com/zh/",
-   javdb: "https://javdb.com/search?f=all&q="
-}
+const websiteUrl = config.websiteUrl;
 
 // 验证番号的合法性
 async function validateCode(req) {

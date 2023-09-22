@@ -2,16 +2,13 @@ const express = require('express');
 const axios = require('axios');
 const cheerio = require('cheerio');
 const router = express.Router();
+const instance = require('../controllers/instance');
 // 封装网页代理函数
 async function ProxyHtml(url, res, title) {
 
-    const headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36 Edg/115.0.1901.203'
-    };
-
     try {
-        // 使用 axios 获取图片并将其作为流传输到客户端
-        const response = await axios.get(url, { headers });
+        // 使用 instance 获取图片并将其作为流传输到客户端
+        const response = await instance.get(url);
         const $ = cheerio.load(response.data); //载入页面
 	const result = {
 		title: title,

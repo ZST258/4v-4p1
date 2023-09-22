@@ -1,15 +1,13 @@
 // controllers/info.js
 const axios = require('axios');
 const cheerio = require('cheerio');
+const instance = require('./instance');
 
 async function GetInfoMsg(fc2num) {
-    const headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36 Edg/115.0.1901.203'
-    };
     const href = 'https://adult.contents.fc2.com/article/' + fc2num + '/'
     try {
-        // 使用 axios 和 cheerio 抓取页面内容
-        const response = await axios.get(href, { headers });
+        // 使用 instance 和 cheerio 抓取页面内容
+        const response = await instance.get(href, { headers });
         const $ = cheerio.load(response.data);
         // 抓取规则
 	const expr_studio = $('#top > div > section > div > section > div > ul > li:nth-child(3) > a');
