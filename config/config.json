@@ -1,4 +1,5 @@
 {
+  "host": "http://localhost",
   "port": 3333,
   "redis": {
        "isUse": true,
@@ -8,6 +9,7 @@
    },
   "proxy": {
       "isUse": false,
+      "type": "http",
       "host": "127.0.0.1",
       "port": 10809
   },

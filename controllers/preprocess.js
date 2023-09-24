@@ -1,4 +1,3 @@
-const axios = require('axios');
 const cheerio = require('cheerio');
 const instance = require('./instance');
 const config = require('../config/config')
@@ -12,7 +11,11 @@ async function fetchData(url) {
 }
 
 //一个网页链接对象
-const websiteUrl = config.websiteUrl;
+const websiteUrl = {
+  javbus: config.websiteUrl.javbus + '/',
+  javmenu: config.websiteUrl.javmenu + '/zh/',
+  javdb: config.websiteUrl.javdb + 'search?f=all&q=',
+};
 
 // 验证番号的合法性
 async function validateCode(req) {
@@ -85,7 +88,7 @@ async function fetchMagnetHtml(req, url) {
     const detailUrl = $('div.movie-list.h.cols-4.vcols-8 > div.item:first-child > a').attr('href').trim();
 
     // 请求详情页
-    const response1 = await fetchData(`https://javdb.com${detailUrl}`);
+    const response1 = await fetchData(`${config.websiteUrl.javdb}${detailUrl.slice(1)}`);
     if (!response1 || response1.status < 200 || response1.status >= 300) {
       return;
     }
@@ -109,7 +112,7 @@ async function fetchRateHtml(req, url) {
     const detailUrl = $('div.movie-list.h.cols-4.vcols-8 > div.item:first-child > a').attr('href').trim();
 
     // 请求详情页
-    const response1 = await fetchData(`https://javdb.com${detailUrl}/reviews/lastest`);
+    const response1 = await fetchData(`${config.websiteUrl.javdb}${detailUrl.slice(1)}/reviews/lastest`);
     if (!response1 || response1.status < 200 || response1.status >= 300) {
       return;
     }

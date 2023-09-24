@@ -1,5 +1,4 @@
 // controllers/info.js
-const axios = require('axios');
 const cheerio = require('cheerio');
 const instance = require('./instance');
 

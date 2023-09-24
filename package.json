@@ -1,7 +1,7 @@
 {
   "name": "api-project",
   "version": "1.0.0",
-  "description": "",
+  "description": "```  npm install  node index.js ```",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -21,6 +21,15 @@
     "https": "^1.0.0",
     "ioredis": "^5.3.2",
     "path": "^0.12.7",
+    "tunnel": "^0.0.6",
     "yargs": "^17.7.2"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ZST258/4v-4p1.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ZST258/4v-4p1/issues"
+  },
+  "homepage": "https://github.com/ZST258/4v-4p1#readme"
 }

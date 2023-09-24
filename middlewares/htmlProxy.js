@@ -1,7 +1,8 @@
 const express = require('express');
-const axios = require('axios');
 const cheerio = require('cheerio');
+const config = require('../config/config')
 const instance = require('../controllers/instance');
+
 const router = express.Router();
 
 // 提取网站javbus信息的函数
@@ -24,12 +25,12 @@ function extractJavbusInfo(data) {
         let imgSrc = $(this).find('img').attr('src');
 
         if (!imgSrc.startsWith("https://") && !imgSrc.startsWith("http://")) {
-            imgSrc = "https://www.javbus.com" + imgSrc;
+            imgSrc = config.websiteUrl.javbus + imgSrc;
         }
 
         imgSrc = "/pics/" + Buffer.from(imgSrc).toString('base64');
 
-        const href = $(this).attr('href').replace('https://www.javbus.com/', '/detail/');
+        const href = $(this).attr('href').replace(`${config.websiteUrl.javbus}/`, '/detail/');
 
         return {
             title: imgTitle,
@@ -76,7 +77,6 @@ function extractJavmenuInfo(data) {
 
 // 封装网页代理函数
 async function ProxyHtml(url, res) {
-    const instance = require('instance');
 
     try {
         const response = await instance.get(url);
@@ -84,7 +84,7 @@ async function ProxyHtml(url, res) {
         res.json({ message: result });
     } catch (error) {
       try {
-        url = url.replace('https://www.javbus.com/','https://javmenu.com/zh/')
+        url = url.replace(`${config.websiteUrl.javbus}/`,`${config.websiteUrl.javmenu}/zh/`)
         const response = await instance.get(url);
         const result = extractJavmenuInfo(response.data);
         res.json({ message: result });
@@ -96,11 +96,9 @@ async function ProxyHtml(url, res) {
 
 // 网页代理路由，使用 /htmls/:url
 router.get(/^\/htmls(.*)/, async (req, res) => {    
-    const htmlUrl = "https://www.javbus.com/" + req.path.replace('/htmls/',''); // 获取 URL 参数
+    const htmlUrl = `${config.websiteUrl.javbus}/` + req.path.replace('/htmls/',''); // 获取 URL 参数
     // 调用网页代理函数
     await ProxyHtml(htmlUrl, res);
 });
 
 module.exports = router;
-
-// curl -X POST -H "Content-Type: application/json" -d "{\"code\":\"IPX-777\",\"type\":\"info\"}" http://154.40.32.177:3333/api

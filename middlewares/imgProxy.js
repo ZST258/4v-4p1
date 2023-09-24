@@ -1,7 +1,6 @@
 const express = require('express');
-const axios = require('axios');
-const https = require('https');
 const router = express.Router();
+const  config = require('../config/config');
 const instance = require('../controllers/instance');
 
 // 封装图片代理函数
@@ -32,8 +31,8 @@ async function ProxyImgStream(url, res) {
 // 图片代理路由，使用 /pics/:url
 router.get('/pics/:url', async (req, res) => {
     const encodedUrl = req.params.url; // 获取编码后的 URL 参数
-    const imageUrl = Buffer.from(encodedUrl, 'base64').toString('utf-8'); // 使用 querystring.unescape 解码 URL 参数
-
+    var imageUrl = Buffer.from(encodedUrl, 'base64').toString('utf-8'); // 使用 querystring.unescape 解码 URL 参数
+    imageUrl.replace('https://www.javbus.com',config.websiteUrl.javbus).replace('https://javdb.com/',config.websiteUrl.javdb);
     // 调用图片代理函数
     ProxyImgStream(imageUrl, res);
 });

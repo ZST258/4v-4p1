@@ -1,8 +1,9 @@
 const express = require('express');
-const axios = require('axios');
 const cheerio = require('cheerio');
+const  config = require('../config/config');
 const router = express.Router();
 const instance = require('../controllers/instance');
+
 async function getSearchResult(url, res) {
 
   try {
@@ -69,7 +70,7 @@ async function getSearchResult(url, res) {
 router.get('/search', async (req, res) => {
   const searchKeyword = req.query.wd;
   const page = req.query.page;
-  const url = "https://javmenu.com/zh/search?wd=" + searchKeyword + "&page=" + page;
+  const url = `${config.websiteUrl.javmenu}/zh/search?wd=` + searchKeyword + "&page=" + page;
   getSearchResult(url, res);
   
 });

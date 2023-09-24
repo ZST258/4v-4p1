@@ -18,12 +18,13 @@ const customConfigPath = argv.config || path.join(__dirname, 'config.json');
 const configData = fs.readFileSync(customConfigPath, 'utf-8');
 const config = JSON.parse(configData);
 
-//新建一个网页链接对象
+// 新建一个网页链接对象
 config.websiteUrl = {
-   javbus: "https://www.javbus.com/",
-   javmenu: "https://javmenu.com/zh/",
-   javdb: "https://javdb.com/search?f=all&q="
+  javbus: "https://www.javbus.com",
+  javmenu: "https://javmenu.com",
+  javdb: "https://javdb.com/"
 }
 
-// 导出配置对象
+console.log(config);
 module.exports = config;
+

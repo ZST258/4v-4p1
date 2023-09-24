@@ -1,7 +1,7 @@
 const express = require('express');
-const axios = require('axios');
 const cheerio = require('cheerio');
 const router = express.Router();
+const  config = require('../config/config');
 const instance = require('../controllers/instance');
 // 封装网页代理函数
 async function ProxyHtml(url, res, title) {
@@ -56,7 +56,7 @@ router.get(/^\/rank/, async (req, res) => {
     if(sort && period ) {
        title=`云霄${sortMap[sort]}${periodMap[period]}榜`;
     }
-    const htmlUrl = "https://javmenu.com/zh" + req.path +'?page=' + page; // 获取 URL 参数     
+    const htmlUrl = config.websiteUrl.javmenu + '/zh' + req.path +'?page=' + page; // 获取 URL 参数     
     // 调用网页代理函数
     ProxyHtml(htmlUrl, res, title);
 });

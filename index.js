@@ -1,10 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const axios = require('axios'); // 引入 axios
-const cheerio = require('cheerio'); // 引入 cheerio
-const https = require('https');
 const Redis = require('ioredis');
-const path = require('path');
 const config = require('./config/config');
 const instance = require('./controllers/instance');
 
@@ -28,6 +24,7 @@ const rankRouter = require('./middlewares/rank');
 
 const app = express();
 const port = config.port || 3333;
+const  host = config.host || "http://localhost"
 
 app.use((req, res, next) => {
   res.setHeader('X-Content-Type-Options', 'nosniff');
@@ -106,5 +103,5 @@ app.use(rankRouter);
 
 
 app.listen(port, () => {
-    console.log(`服务器运行在 http://localhost:${port}`);
+    console.log(`服务器运行在 ${host}:${port}`);
 });
