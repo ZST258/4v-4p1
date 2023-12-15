@@ -20,9 +20,9 @@ const config = JSON.parse(configData);
 
 // 新建一个网页链接对象
 config.websiteUrl = {
-  javbus: "https://www.javbus.com",
-  javmenu: "https://javmenu.com",
-  javdb: "https://javdb.com/"
+  javbus: "https://www.busfan.lol",
+  javmenu: "https://javmenu.net",
+  javdb: "https://javdb522.com/"
 }
 
 console.log(config);

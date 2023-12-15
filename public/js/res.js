@@ -99,7 +99,7 @@ function displayResponse(responseData) {
     var imageElement = document.getElementById("image");
     image.setAttribute("data-src", responseData.message.cover);
     var expandedImageElement = document.querySelector(".expanded");
-    titleElement.textContent = responseData.message.title;
+    titleElement.textContent = responseData.message.title.replace('免费AV在线看','');
     expandedImageElement.src = responseData.message.cover;
     var movieInfoDiv = document.createElement("div");
     movieInfoDiv.classList.add("movie-info");

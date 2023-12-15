@@ -44,20 +44,6 @@ async function validateType(req) {
 }
 
 async function fetchInfoHtml(req, url) {
-  req.body.site = 'javbus';
-  const data = await fetchData(url);
-  if (data && data.status >= 200 && data.status < 300 ) {
-    return data.data;
-  }
-
-  // 大写字母抓取失败，尝试小写字母抓取
-  req.body.code = req.body.code.toLowerCase();
-  const lowerUrl = `${websiteUrl[req.body.site]}${req.body.code}`;
-  const lowerData = await fetchData(lowerUrl);
-
-  if (lowerData && lowerData.status >= 200 && lowerData.status < 300) {
-    return lowerData.data;
-  }
 
   // 小写字母抓取失败，尝试 javmenu
   req.body.code = req.body.code.toUpperCase();
